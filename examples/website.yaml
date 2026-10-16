@@ -1,0 +1,8 @@
+apiVersion: sites.example.dev/v1
+kind: Website
+metadata:
+  name: hello
+  namespace: tss04-c5
+spec:
+  image: nginx:1.27
+  replicas: 2

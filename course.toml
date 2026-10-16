@@ -1,0 +1,17 @@
+[course]
+slug = "k8s-c5-operators-kube-rs"
+number = 5
+title = "Operators with kube-rs"
+tagline = "A Website operator and an admission validator in Rust, tested to 100%."
+description = "Tested Rust code for the capstone of the Kubernetes and GitOps specialization: a Website custom resource, a reconciler that owns a Deployment and finalizes on delete, and validating and mutating admission logic, driven from a command-line tool."
+prerequisites = ["A Kubernetes cluster and kubectl (kind is enough)", "Rust 1.89 or newer"]
+
+[[examples]]
+dir = "src"
+title = "opctl CLI"
+summary = "crd, plan, validate, mutate, contract; run is the thin glue"
+
+[[examples]]
+dir = "examples"
+title = "sample inputs"
+summary = "a Website manifest and an allowed and a refused AdmissionReview"

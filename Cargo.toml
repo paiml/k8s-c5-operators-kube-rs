@@ -1,0 +1,31 @@
+[package]
+name = "opctl"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+description = "Capstone: a Website operator and admission webhook logic in Rust with kube-rs"
+license = "MIT"
+publish = false
+
+[lib]
+name = "opctl"
+path = "src/lib.rs"
+
+[[bin]]
+name = "opctl"
+path = "src/main.rs"
+
+[dependencies]
+futures = "0.3"
+base64 = "0.22"
+json-patch = "4"
+k8s-openapi = { version = "0.28.0", features = ["latest"] }
+kube = { version = "4.2.0", features = ["runtime", "derive", "client", "admission", "jsonpatch"] }
+schemars = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt"] }

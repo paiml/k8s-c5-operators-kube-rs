@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <rect width="1280" height="640" fill="#0f172a"/>
+  <rect x="80" y="80" width="1120" height="480" rx="24" fill="#1e293b" stroke="#38bdf8" stroke-width="4"/>
+  <circle cx="132" cy="128" r="12" fill="#f87171"/>
+  <circle cx="172" cy="128" r="12" fill="#fbbf24"/>
+  <circle cx="212" cy="128" r="12" fill="#4ade80"/>
+  <text x="140" y="260" font-family="Lato, sans-serif" font-size="84" font-weight="700" fill="#f8fafc">Operators with kube-rs</text>
+  <text x="140" y="340" font-family="Lato, sans-serif" font-size="40" fill="#94a3b8">A controller and admission validator in Rust</text>
+  <text x="140" y="450" font-family="monospace" font-size="44" fill="#4ade80">$ opctl validate review-ok.json</text>
+  <text x="140" y="510" font-family="monospace" font-size="44" fill="#f87171">allowed: false  replicas 9 &gt; 5</text>
+</svg>

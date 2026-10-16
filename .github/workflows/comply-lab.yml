@@ -1,0 +1,10 @@
+name: comply-lab
+on:
+  schedule:
+    - cron: "17 3 * * *"
+jobs:
+  comply:
+    runs-on: [self-hosted, clean-room, X64, intel]
+    steps:
+      - uses: actions/checkout@v4
+      - run: pmat comply check --failures-only

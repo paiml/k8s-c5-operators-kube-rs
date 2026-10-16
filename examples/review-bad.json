@@ -1,0 +1,22 @@
+{
+  "apiVersion": "admission.k8s.io/v1",
+  "kind": "AdmissionReview",
+  "request": {
+    "uid": "22222222-bbbb-4bbb-8bbb-000000000002",
+    "kind": {"group": "sites.example.dev", "version": "v1", "kind": "Website"},
+    "resource": {"group": "sites.example.dev", "version": "v1", "resource": "websites"},
+    "requestKind": {"group": "sites.example.dev", "version": "v1", "kind": "Website"},
+    "requestResource": {"group": "sites.example.dev", "version": "v1", "resource": "websites"},
+    "name": "hello",
+    "namespace": "tss04-c5",
+    "operation": "CREATE",
+    "userInfo": {"username": "kubernetes-admin"},
+    "object": {
+      "apiVersion": "sites.example.dev/v1",
+      "kind": "Website",
+      "metadata": {"name": "hello", "namespace": "tss04-c5"},
+      "spec": {"image": "nginx:latest", "replicas": 9}
+    },
+    "dryRun": false
+  }
+}

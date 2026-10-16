@@ -1,0 +1,58 @@
+metadata:
+  version: "1.0.0"
+  author: "paiml"
+  description: "opctl admission contracts: a Website is admitted only when its image is pinned and replicas is within 0..=5, and mutation is idempotent"
+  kind: pattern
+  crate: "opctl"
+  references:
+    - "kubernetes.io Dynamic Admission Control (admission.k8s.io/v1 AdmissionReview)"
+    - "RFC 6902 JSON Patch"
+
+equations:
+  admit_only_pinned_and_bounded:
+    formula: "allowed(w) <=> pinned(w.image) and 0 <= w.replicas <= 5 (absent replicas counts as in range)"
+    domain: "w ∈ Website specs, replicas ∈ ℤ ∪ {absent}"
+    invariants:
+      - "an image with no tag, an empty tag or the tag latest is refused"
+      - "replicas above 5 or below 0 is refused"
+      - "a refusal carries a message naming every broken rule"
+  mutation_is_idempotent:
+    formula: "mutate(mutate(w)) = mutate(w) and labels(mutate(w)) contains managed-by and replicas(mutate(w)) is set"
+    domain: "w ∈ admitted Website objects"
+    invariants:
+      - "the default label and default replicas are present after one mutation"
+      - "mutating an already mutated object returns no patch"
+
+proof_obligations:
+  - type: invariant
+    property: "No unpinned image and no replicas outside 0..=5 is ever admitted"
+    formal: "allowed(w) => pinned(w.image) and 0 <= replicas(w) <= 5"
+    applies_to: all
+  - type: idempotency
+    property: "Applying the mutation patch twice equals applying it once"
+    formal: "apply(mutate(apply(mutate(w)))) = apply(mutate(w))"
+    applies_to: all
+
+falsification_tests:
+  - id: FALSIFY-ADM-001
+    rule: "unpinned or oversized Websites are refused"
+    test: "contract_catches_a_validator_that_admits_everything"
+    prediction: "a validator that admits everything is reported as a violation by the contract matrix"
+    if_fails: "Contract violation — the matrix cannot tell a refusing validator from one that admits everything"
+  - id: FALSIFY-ADM-002
+    rule: "the real handlers satisfy the contract"
+    test: "binary_contract_line"
+    prediction: "prints contract: admission-refuses-unpinned-or-oversized OK"
+    if_fails: "Contract violation — a Website that should be refused was admitted, or mutation is not idempotent"
+  - id: FALSIFY-ADM-003
+    rule: "mutation is idempotent"
+    test: "contract_catches_mutators_that_do_nothing_repeat_or_break"
+    prediction: "a mutator that keeps patching, does nothing or breaks the object is reported as a violation"
+    if_fails: "Contract violation — the matrix cannot detect a non-idempotent mutator"
+
+qa_gate:
+  id: QA-ADM
+  name: "opctl admission contracts"
+  min_coverage: 1.0
+  max_complexity: 10
+  required_tests: ["binary_contract_line", "contract_catches_a_validator_that_admits_everything", "contract_catches_mutators_that_do_nothing_repeat_or_break"]
